@@ -1,6 +1,5 @@
 ﻿class Program
 {
-    // List untuk menyimpan data mahasiswa sementara
     static List<string> daftarMahasiswa = new List<string>();
 
     static void Main(string[] args)
@@ -89,7 +88,6 @@
         Console.Write("Masukkan nama/keyword yang dicari: ");
         string cari = Console.ReadLine();
 
-        // Cari data yang mengandung kata kunci (case-insensitive)
         var hasil = daftarMahasiswa.FindAll(m => m.Contains(cari, StringComparison.OrdinalIgnoreCase));
 
         if (hasil.Count > 0)
