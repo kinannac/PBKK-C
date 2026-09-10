@@ -1,0 +1,14 @@
+/Users/keen/College/SMT5/PBKK/latihan/bin/Debug/net10.0/latihan
+/Users/keen/College/SMT5/PBKK/latihan/bin/Debug/net10.0/latihan.deps.json
+/Users/keen/College/SMT5/PBKK/latihan/bin/Debug/net10.0/latihan.runtimeconfig.json
+/Users/keen/College/SMT5/PBKK/latihan/bin/Debug/net10.0/latihan.dll
+/Users/keen/College/SMT5/PBKK/latihan/bin/Debug/net10.0/latihan.pdb
+/Users/keen/College/SMT5/PBKK/latihan/obj/Debug/net10.0/latihan.GeneratedMSBuildEditorConfig.editorconfig
+/Users/keen/College/SMT5/PBKK/latihan/obj/Debug/net10.0/latihan.AssemblyInfoInputs.cache
+/Users/keen/College/SMT5/PBKK/latihan/obj/Debug/net10.0/latihan.AssemblyInfo.cs
+/Users/keen/College/SMT5/PBKK/latihan/obj/Debug/net10.0/latihan.csproj.CoreCompileInputs.cache
+/Users/keen/College/SMT5/PBKK/latihan/obj/Debug/net10.0/latihan.dll
+/Users/keen/College/SMT5/PBKK/latihan/obj/Debug/net10.0/refint/latihan.dll
+/Users/keen/College/SMT5/PBKK/latihan/obj/Debug/net10.0/latihan.pdb
+/Users/keen/College/SMT5/PBKK/latihan/obj/Debug/net10.0/latihan.genruntimeconfig.cache
+/Users/keen/College/SMT5/PBKK/latihan/obj/Debug/net10.0/ref/latihan.dll
