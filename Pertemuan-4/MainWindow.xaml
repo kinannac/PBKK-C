@@ -1,0 +1,160 @@
+﻿<Window x:Class="StudentRegistrationApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Student Registration"
+        Height="600"
+        Width="850"
+        WindowStartupLocation="CenterScreen"
+        Background="#F8F9FA">
+
+    <Window.Resources>
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="6" 
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.70"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="30">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="1.2*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- FORM -->
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="STUDENT REGISTRATION"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Foreground="#212529"
+                       Margin="0,0,0,20"/>
+
+            <TextBlock Text="NIM" FontWeight="SemiBold" Foreground="#495057"/>
+            <TextBox x:Name="txtNim"
+                     Height="35"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,15"/>
+
+            <TextBlock Text="Nama Mahasiswa" FontWeight="SemiBold" Foreground="#495057"/>
+            <TextBox x:Name="txtNama"
+                     Height="35"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,15"/>
+
+            <TextBlock Text="Program Studi" FontWeight="SemiBold" Foreground="#495057"/>
+            <ComboBox x:Name="cmbProdi"
+                      Height="35"
+                      VerticalContentAlignment="Center"
+                      Margin="0,5,0,15">
+                <ComboBoxItem Content="Teknik Informatika"/>
+                <ComboBoxItem Content="Sistem Informasi"/>
+                <ComboBoxItem Content="Manajemen"/>
+                <ComboBoxItem Content="Akuntansi"/>
+            </ComboBox>
+
+            <TextBlock Text="Jenis Kelamin" FontWeight="SemiBold" Foreground="#495057"/>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,20">
+                <RadioButton x:Name="rbLaki" Content="Laki-laki" Margin="0,0,20,0"/>
+                <RadioButton x:Name="rbPerempuan" Content="Perempuan"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <!-- Simpan -->
+                <Button Content="Simpan"
+                        Width="120"
+                        Height="40"
+                        Margin="0,0,10,0"
+                        Background="ForestGreen"
+                        Style="{StaticResource RoundedButtonStyle}"
+                        Click="BtnSimpan_Click"/>
+
+                <!-- Reset -->
+                <Button Content="Reset"
+                        Width="120"
+                        Height="40"
+                        Background="#6C757D"
+                        Style="{StaticResource RoundedButtonStyle}"
+                        Click="BtnReset_Click"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- DATA -->
+        <StackPanel Grid.Column="2">
+            <TextBlock Text="DATA MAHASISWA"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Foreground="#212529"
+                       Margin="0,0,0,20"/>
+
+            <Border CornerRadius="8" BorderBrush="#DEE2E6" BorderThickness="1" Background="White">
+                <ListBox x:Name="lstMahasiswa"
+                         Height="410"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         Padding="5"
+                         HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#E9ECEF" BorderThickness="0,0,0,1" Padding="5,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding}" 
+                                               VerticalAlignment="Center" 
+                                               FontSize="13" 
+                                               Foreground="#333333"/>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Content="Update" 
+                                                Width="60" 
+                                                Height="28" 
+                                                Margin="0,0,5,0"
+                                                Background="CadetBlue" 
+                                                Foreground="White"
+                                                FontSize="11"
+                                                Style="{StaticResource RoundedButtonStyle}"
+                                                Click="BtnItemUpdate_Click"/>
+
+                                        <Button Content="Delete" 
+                                                Width="60" 
+                                                Height="28" 
+                                                Background="#DC3545" 
+                                                FontSize="11"
+                                                Style="{StaticResource RoundedButtonStyle}"
+                                                Click="BtnItemDelete_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>
