@@ -1,1 +1,67 @@
+CREATE TABLE ProfilToko (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    NamaToko VARCHAR(100) NOT NULL,
+    Alamat VARCHAR(255),
+    Telepon VARCHAR(20)
+);
 
+CREATE TABLE Users (
+    IdUser INT PRIMARY KEY IDENTITY(1,1),
+    Username VARCHAR(50) UNIQUE NOT NULL,
+    PasswordHash VARCHAR(255) NOT NULL,
+    Role VARCHAR(20) NOT NULL,
+    NamaLengkap VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Kategori (
+    IdKategori INT PRIMARY KEY IDENTITY(1,1),
+    NamaKategori VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Diskon (
+    IdDiskon INT PRIMARY KEY IDENTITY(1,1),
+    NamaDiskon VARCHAR(50) NOT NULL,
+    Persentase DECIMAL(5,2) NOT NULL,
+    IsActive BIT DEFAULT 1
+);
+
+CREATE TABLE Pelanggan (
+    IdPelanggan INT PRIMARY KEY IDENTITY(1,1),
+    NamaPelanggan VARCHAR(100) NOT NULL,
+    Kontak VARCHAR(20),
+    Poin INT DEFAULT 0
+);
+
+CREATE TABLE Produk (
+    IdProduk INT PRIMARY KEY IDENTITY(1,1),
+    IdKategori INT FOREIGN KEY REFERENCES Kategori(IdKategori),
+    IdDiskon INT NULL FOREIGN KEY REFERENCES Diskon(IdDiskon),
+    NamaProduk VARCHAR(100) NOT NULL,
+    Harga DECIMAL(12,2) NOT NULL,
+    Stok INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE Transaksi (
+    IdTransaksi INT PRIMARY KEY IDENTITY(1,1),
+    IdUser INT FOREIGN KEY REFERENCES Users(IdUser),
+    IdPelanggan INT NULL FOREIGN KEY REFERENCES Pelanggan(IdPelanggan),
+    WaktuTransaksi DATETIME DEFAULT GETDATE(),
+    TotalBayar DECIMAL(12,2) NOT NULL,
+    Kembalian DECIMAL(12,2) NOT NULL
+);
+
+CREATE TABLE DetailTransaksi (
+    IdDetail INT PRIMARY KEY IDENTITY(1,1),
+    IdTransaksi INT FOREIGN KEY REFERENCES Transaksi(IdTransaksi),
+    IdProduk INT FOREIGN KEY REFERENCES Produk(IdProduk),
+    Qty INT NOT NULL,
+    HargaSatuan DECIMAL(12,2) NOT NULL,
+    Subtotal DECIMAL(12,2) NOT NULL
+);
+
+CREATE TABLE ActivityLog (
+    IdLog INT PRIMARY KEY IDENTITY(1,1),
+    IdUser INT FOREIGN KEY REFERENCES Users(IdUser),
+    Aksi VARCHAR(255) NOT NULL,
+    Waktu DATETIME DEFAULT GETDATE()
+);
