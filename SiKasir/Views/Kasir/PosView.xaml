@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="SiKasir.Views.Kasir.PosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style x:Key="MessageText" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsError}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*" MinWidth="340"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Daftar produk -->
+        <DockPanel Margin="0,0,16,0">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="Menu Kasir (POS)" FontSize="26" FontWeight="Bold"/>
+                <TextBlock Text="Cari produk lalu klik Tambah" Foreground="{StaticResource MutedTextBrush}" Margin="0,4,0,16"/>
+                <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="{Binding EmptyText}" Foreground="{StaticResource MutedTextBrush}" Margin="0,12,0,0"/>
+            </StackPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+                <ItemsControl ItemsSource="{Binding Produk}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource CardBorder}" Width="190" Margin="0,0,12,12" Padding="14">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding NamaProduk}" FontWeight="SemiBold" TextWrapping="Wrap" MinHeight="40"/>
+                                    <TextBlock Text="{Binding Harga, StringFormat='Rp {0:N0}'}" Foreground="{StaticResource PrimaryHoverBrush}" FontSize="16" Margin="0,6,0,0"/>
+                                    <TextBlock Text="{Binding Stok, StringFormat='Stok: {0}'}" Foreground="{StaticResource MutedTextBrush}"/>
+                                    <Button Content="Tambah" Style="{StaticResource PrimaryButton}" Padding="8,6" Margin="0,10,0,0"
+                                            Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+
+        <!-- Keranjang -->
+        <Border Grid.Column="1" Style="{StaticResource CardBorder}">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Keranjang" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+                    <Grid>
+                        <TextBlock Text="Total" FontSize="16"/>
+                        <TextBlock Text="{Binding Total, StringFormat='Rp {0:N0}'}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <TextBlock Text="Uang dibayar" Margin="0,14,0,6"/>
+                    <TextBox Text="{Binding UangDibayar, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Grid Margin="0,10,0,0">
+                        <TextBlock Text="Kembalian" Foreground="{StaticResource MutedTextBrush}"/>
+                        <TextBlock Text="{Binding KembalianText}" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <TextBlock Text="{Binding Message}" Style="{StaticResource MessageText}" Margin="0,10,0,0"/>
+
+                    <Button Content="BAYAR" Style="{StaticResource PrimaryButton}" Margin="0,10,0,0" Padding="16,14"
+                            Command="{Binding CheckoutCommand}"/>
+                    <Button Content="Kosongkan keranjang" Style="{StaticResource SidebarButton}" Margin="0,6,0,0"
+                            Command="{Binding ClearCommand}"/>
+                </StackPanel>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Keranjang}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Nama}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Subtotal, StringFormat='Rp {0:N0}'}" Foreground="{StaticResource MutedTextBrush}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button Content="-" Style="{StaticResource SmallButton}"
+                                                Command="{Binding DataContext.MinusCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"/>
+                                        <TextBlock Text="{Binding Qty}" Width="32" TextAlignment="Center" VerticalAlignment="Center"/>
+                                        <Button Content="+" Style="{StaticResource SmallButton}"
+                                                Command="{Binding DataContext.PlusCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"/>
+                                        <Button Content="x" Style="{StaticResource SmallButton}" Margin="8,0,0,0"
+                                                Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

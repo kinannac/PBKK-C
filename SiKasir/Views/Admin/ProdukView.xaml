@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="SiKasir.Views.Admin.ProdukView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style x:Key="GridHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style x:Key="MessageText" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsError}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*" MinWidth="320"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Daftar produk -->
+        <DockPanel Margin="0,0,16,0">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="Data Produk" FontSize="26" FontWeight="Bold"/>
+                <TextBlock Text="Klik baris untuk mengubah atau menghapus" Foreground="{StaticResource MutedTextBrush}" Margin="0,4,0,16"/>
+                <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
+                <TextBlock Text="{Binding EmptyText}" Foreground="{StaticResource MutedTextBrush}" Margin="0,0,0,8"/>
+            </StackPanel>
+
+            <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding Selected, Mode=TwoWay}"
+                      AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                      SelectionMode="Single" HeadersVisibility="Column"
+                      Background="Transparent" Foreground="{StaticResource TextBrush}"
+                      RowBackground="Transparent" BorderBrush="{StaticResource AppBorderBrush}"
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="{StaticResource AppBorderBrush}"
+                      ColumnHeaderStyle="{StaticResource GridHeader}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nama Produk" Binding="{Binding NamaProduk}" Width="*"/>
+                    <DataGridTextColumn Header="Kategori" Binding="{Binding NamaKategori}" Width="110"/>
+                    <DataGridTextColumn Header="Harga" Binding="{Binding Harga, StringFormat='Rp {0:N0}'}" Width="110"/>
+                    <DataGridTextColumn Header="Stok" Binding="{Binding Stok}" Width="70"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+
+        <!-- Form -->
+        <Border Grid.Column="1" Style="{StaticResource CardBorder}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="{Binding FormTitle}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,14"/>
+
+                    <TextBlock Text="Nama produk" Margin="0,0,0,6"/>
+                    <TextBox Text="{Binding Nama, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="Kategori" Margin="0,12,0,6"/>
+                    <ComboBox ItemsSource="{Binding KategoriList}" DisplayMemberPath="NamaKategori"
+                              SelectedItem="{Binding SelectedKategori}" Padding="8,8" FontSize="14"/>
+                    <Grid Margin="0,8,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Text="{Binding NewKategori, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Grid.Column="1" Content="+ Kategori" Style="{StaticResource SidebarButton}"
+                                Command="{Binding AddKategoriCommand}"/>
+                    </Grid>
+
+                    <TextBlock Text="Harga (Rp)" Margin="0,12,0,6"/>
+                    <TextBox Text="{Binding Harga, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="Stok" Margin="0,12,0,6"/>
+                    <TextBox Text="{Binding Stok, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="{Binding Message}" Style="{StaticResource MessageText}" Margin="0,12,0,0"/>
+
+                    <Button Content="Simpan" Style="{StaticResource PrimaryButton}" Margin="0,10,0,0"
+                            Command="{Binding SaveCommand}"/>
+                    <Button Content="Form baru" Style="{StaticResource SidebarButton}" Margin="0,6,0,0"
+                            Command="{Binding NewCommand}"/>
+                    <Button Content="Hapus produk" Style="{StaticResource SidebarButton}"
+                            Foreground="{StaticResource DangerBrush}"
+                            Command="{Binding DeleteCommand}"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>
