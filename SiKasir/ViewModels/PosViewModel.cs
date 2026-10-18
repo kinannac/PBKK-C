@@ -150,7 +150,6 @@ namespace SiKasir.ViewModels
             IsBusy = true;
             try
             {
-                decimal total = Total;
                 var items = Keranjang.Select(k => new ItemKeranjang
                 {
                     IdProduk = k.IdProduk,
@@ -158,16 +157,17 @@ namespace SiKasir.ViewModels
                     HargaSatuan = k.HargaSatuan
                 }).ToList();
 
-                bool ok = await Task.Run(() => _trxRepo.ProsesCheckout(_userId, total, bayar, items));
-                if (ok)
+                var hasil = await Task.Run(() => _trxRepo.ProsesCheckout(_userId, bayar, items));
+                if (hasil.Success)
                 {
                     Keranjang.Clear();
                     UangDibayar = "";
                     Recalc();
-                    SetInfo($"Transaksi berhasil. Kembalian {Rp(bayar - total)}.");
-                    await LoadProdukAsync();
+                    SetInfo($"Transaksi berhasil. Total {Rp(hasil.Total)}, kembalian {Rp(hasil.Kembalian)}.");
                 }
-                else SetError("Transaksi gagal disimpan. Silakan coba lagi.");
+                else SetError(hasil.Message);
+
+                await LoadProdukAsync(); // segarkan stok dan harga di daftar produk
             }
             catch (Exception)
             {

@@ -11,10 +11,12 @@ namespace SiKasir.Repositories
             using (var conn = DatabaseConnection.GetConnection())
             {
                 conn.Open();
+                UserRepository.EnsureSchema(conn);
 
                 int id;
                 string role, stored;
-                using (var cmd = new SqlCommand("SELECT IdUser, Role, PasswordHash FROM Users WHERE Username = @user", conn))
+                bool active;
+                using (var cmd = new SqlCommand("SELECT IdUser, Role, PasswordHash, IsActive FROM Users WHERE Username = @user", conn))
                 {
                     cmd.Parameters.AddWithValue("@user", username);
                     using (var r = cmd.ExecuteReader())
@@ -23,14 +25,16 @@ namespace SiKasir.Repositories
                         id = r.GetInt32(0);
                         role = r.GetString(1);
                         stored = r.GetString(2);
+                        active = r.GetBoolean(3);
                     }
                 }
+
+                if (!active) return string.Empty;
 
                 bool legacy = !PasswordHasher.IsHashed(stored);
                 bool ok = legacy ? stored == password : PasswordHasher.Verify(password, stored);
                 if (!ok) return string.Empty;
 
-                // Akun lama dengan password teks biasa di-upgrade ke hash saat login berhasil
                 if (legacy)
                 {
                     using (var up = new SqlCommand("UPDATE Users SET PasswordHash = @h WHERE IdUser = @id", conn))

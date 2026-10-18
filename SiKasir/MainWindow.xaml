@@ -21,6 +21,9 @@
         <DataTemplate DataType="{x:Type vm:ProdukViewModel}">
             <admin:ProdukView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PenggunaViewModel}">
+            <admin:PenggunaView/>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -47,6 +50,9 @@
                             Visibility="{Binding IsKasir, Converter={StaticResource BoolToVis}}"/>
                     <Button Content="Produk" Style="{StaticResource SidebarButton}"
                             Command="{Binding ShowProdukCommand}"
+                            Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}"/>
+                    <Button Content="Pengguna" Style="{StaticResource SidebarButton}"
+                            Command="{Binding ShowPenggunaCommand}"
                             Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}"/>
                 </StackPanel>
             </DockPanel>

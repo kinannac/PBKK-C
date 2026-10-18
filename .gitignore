@@ -1,0 +1,15 @@
+
+publish/
+release/
+*.zip
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+# Build
+[Bb]in/
+[Oo]bj/
+publish/
+release/
+*.zip
