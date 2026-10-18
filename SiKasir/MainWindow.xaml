@@ -1,12 +1,57 @@
 ﻿<Window x:Class="SiKasir.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SiKasir"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        xmlns:vm="clr-namespace:SiKasir.ViewModels"
+        xmlns:kasir="clr-namespace:SiKasir.Views.Kasir"
+        xmlns:admin="clr-namespace:SiKasir.Views.Admin"
+        Title="SI-KASIR" Width="1200" Height="720" MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:DashboardKasirViewModel}">
+            <kasir:DashboardKasirView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:DashboardAdminViewModel}">
+            <admin:DashboardAdminView/>
+        </DataTemplate>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <DataTemplate DataType="{x:Type vm:PosViewModel}">
+            <kasir:PosView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProdukViewModel}">
+            <admin:ProdukView/>
+        </DataTemplate>
+    </Window.Resources>
 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource AppBorderBrush}" BorderThickness="0,0,1,0">
+            <DockPanel Margin="16">
+                <StackPanel DockPanel.Dock="Top" Margin="0,8,0,24">
+                    <TextBlock Text="SI-KASIR" FontSize="22" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding Role}" Foreground="{StaticResource MutedTextBrush}" Margin="0,2,0,0"/>
+                </StackPanel>
+
+                <Button DockPanel.Dock="Bottom" Content="Keluar" Style="{StaticResource SidebarButton}"
+                        Command="{Binding LogoutCommand}"/>
+
+                <StackPanel>
+                    <Button Content="Dashboard" Style="{StaticResource SidebarButton}"
+                            Command="{Binding ShowDashboardCommand}"/>
+                    <Button Content="Kasir (POS)" Style="{StaticResource SidebarButton}"
+                            Command="{Binding ShowPosCommand}"
+                            Visibility="{Binding IsKasir, Converter={StaticResource BoolToVis}}"/>
+                    <Button Content="Produk" Style="{StaticResource SidebarButton}"
+                            Command="{Binding ShowProdukCommand}"
+                            Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Margin="28"/>
     </Grid>
 </Window>
