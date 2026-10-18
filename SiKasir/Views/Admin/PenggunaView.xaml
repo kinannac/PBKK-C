@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="SiKasir.Views.Admin.PenggunaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style x:Key="GridHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style x:Key="MessageText" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsError}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*" MinWidth="320"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Margin="0,0,16,0">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="Data Pengguna" FontSize="26" FontWeight="Bold"/>
+                <TextBlock Text="Kelola akun admin dan kasir" Foreground="{StaticResource MutedTextBrush}" Margin="0,4,0,16"/>
+            </StackPanel>
+
+            <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding Selected, Mode=TwoWay}"
+                      AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                      SelectionMode="Single" HeadersVisibility="Column"
+                      Background="Transparent" Foreground="{StaticResource TextBrush}"
+                      RowBackground="Transparent" BorderBrush="{StaticResource AppBorderBrush}"
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="{StaticResource AppBorderBrush}"
+                      ColumnHeaderStyle="{StaticResource GridHeader}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nama Lengkap" Binding="{Binding NamaLengkap}" Width="*"/>
+                    <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="130"/>
+                    <DataGridTextColumn Header="Peran" Binding="{Binding Role}" Width="80"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+
+        <Border Grid.Column="1" Style="{StaticResource CardBorder}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="Tambah Pengguna" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,14"/>
+
+                    <TextBlock Text="Nama lengkap" Margin="0,0,0,6"/>
+                    <TextBox Text="{Binding Nama, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="Username" Margin="0,12,0,6"/>
+                    <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="Peran" Margin="0,12,0,6"/>
+                    <ComboBox ItemsSource="{Binding Roles}" SelectedItem="{Binding Role}" Padding="8,8" FontSize="14"/>
+
+                    <TextBlock Text="Password" Margin="0,12,0,6"/>
+                    <PasswordBox x:Name="PwBox" PasswordChanged="Pw_Changed"/>
+
+                    <TextBlock Text="Konfirmasi password" Margin="0,12,0,6"/>
+                    <PasswordBox x:Name="Pw2Box" PasswordChanged="Pw2_Changed"/>
+
+                    <TextBlock Text="{Binding Message}" Style="{StaticResource MessageText}" Margin="0,12,0,0"/>
+
+                    <Button Content="Tambah pengguna" Style="{StaticResource PrimaryButton}" Margin="0,10,0,0"
+                            Command="{Binding AddCommand}"/>
+
+                    <Border BorderBrush="{StaticResource AppBorderBrush}" BorderThickness="0,1,0,0" Margin="0,18,0,12"/>
+
+                    <TextBlock Text="Pengguna terpilih" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding SelectedInfo}" Foreground="{StaticResource MutedTextBrush}" Margin="0,4,0,8" TextWrapping="Wrap"/>
+                    <Button Content="Ganti password (isi kolom password di atas)" Style="{StaticResource SidebarButton}"
+                            Command="{Binding ResetPasswordCommand}"/>
+                    <Button Content="{Binding ToggleText}" Style="{StaticResource SidebarButton}"
+                            Foreground="{StaticResource DangerBrush}"
+                            Command="{Binding ToggleCommand}"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

@@ -18,6 +18,8 @@ namespace SiKasir.ViewModels
         public ICommand ShowPosCommand { get; }
         public ICommand LogoutCommand { get; }
         public ICommand ShowProdukCommand { get; }
+        public ICommand ShowPenggunaCommand { get; }                         // bersama property command lain
+
         public event Action? LogoutRequested;
 
         public MainViewModel(string role, int userId)
@@ -30,6 +32,7 @@ namespace SiKasir.ViewModels
             ShowDashboardCommand = new RelayCommand(_ => ShowDashboard());
             ShowPosCommand = new RelayCommand(_ => ShowPos());
             ShowProdukCommand = new RelayCommand(_ => ShowProduk());
+            ShowPenggunaCommand = new RelayCommand(_ => ShowPengguna());         // di dalam konstruktor
             LogoutCommand = new RelayCommand(_ => LogoutRequested?.Invoke());
 
             ShowDashboard();
@@ -46,5 +49,6 @@ namespace SiKasir.ViewModels
         {
             if (IsAdmin) CurrentView = new ProdukViewModel();
         }
+        private void ShowPengguna() { if (IsAdmin) CurrentView = new PenggunaViewModel(UserId); }
     }
 }
